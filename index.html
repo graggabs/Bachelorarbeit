@@ -1,41 +1,28 @@
 <!DOCTYPE html>
-<html lang="de">
-<head>
-  <title>Umfrage - Data Driven Cross-Selling</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body style="font-family: Arial; text-align: center; padding: 50px; background: #f0f8ff;">
-  <h1>🎯 Willkommen zur Umfrage!</h1>
-  <p><strong>Bachelorarbeit:</strong> Data Driven Cross-Selling im E-Commerce</p>
-  <p>Du wirst automatisch zu <strong>einer zufälligen Version</strong> (50/50) weitergeleitet.</p>
-  <div style="font-size: 24px; margin: 20px;">
-    Weiterleitung in <span id="time">5</span> Sekunden...
-  </div>
-  
-  <script>
-    // DEINE QUESTBACK-LINKS HIER EINFÜGEN!
-    const links = [
-      'https://response.questback.com/campus02/di3m5wso2k',  // Version A
-      'https://response.questback.com/campus02/vyojauo5yx'   // Version B
-    ];
-    
-    const namespace = 'stefangraggaber.questback.abtest';  // Unique Stats-ID
-    const randomIndex = Math.floor(Math.random() * 2);
-    
-    // CounterAPI Ping für Live-Stats
-    fetch(`https://api.countapi.xyz/hit/${namespace}/version${randomIndex + 1}`);
-    
-    // Countdown + Redirect
-    let time = 5;
-    const timer = setInterval(() => {
-      document.getElementById('time').textContent = time;
-      time--;
-      if (time < 0) {
-        clearInterval(timer);
-        window.location.href = links[randomIndex];
-      }
-    }, 1000);
-  </script>
-</body>
-</html>
+<!-- Bachelorarbeit Umfrage: Data Driven Cross-Selling A/B-Test -->
+<meta charset="utf-8">
+<title>Umfrage Redirect</title>
+
+<script>
+// =====================================================
+// KONFIGURATION: HIER DEINE QUESTBACK-LINKS EINFÜGEN!
+// =====================================================
+const LINK_A = 'https://response.questback.com/campus02/di3m5wso2k';  // <-- Version A
+const LINK_B = 'https://response.questback.com/campus02/vyojauo5yx';  // <-- Version B
+
+// Stats-Namespace (unique für dich)
+const STATS_NAMESPACE = 'stefangraggaber.questback.random';
+
+// =====================================================
+// RANDOM 50/50 + REDIRECT (automatisch)
+// =====================================================
+const isA = Math.random() < 0.5;  // 50% Chance für A
+const targetUrl = isA ? LINK_A : LINK_B;
+
+// Live-Stats zu CounterAPI (optional)
+fetch(`https://api.countapi.xyz/hit/${STATS_NAMESPACE}/${isA ? 'A' : 'B'}`);
+
+// SOFORT umleiten (kein Delay, clean History)
+window.location.replace(targetUrl);
+</script>
+
