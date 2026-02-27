@@ -1,17 +1,41 @@
-# Bachelorarbeit
 <!DOCTYPE html>
-<html>
-<head><title>Umfrage</title></head>
-<body onload="redirect()">
-<script>
-const links = ['https://response.questback.com/campus02/di3m5wso2k', 'https://response.questback.com/campus02/vyojauo5yx'];  // Ersetze mit echten URLs
-const randomIndex = Math.floor(Math.random() * links.length);
-
-// Ping zu CounterAPI (namespace=deintest, key=A oder B)
-fetch(`https://api.countapi.xyz/hit/deintest.questback/${randomIndex === 0 ? 'A' : 'B'}`);
-
-window.location.href = links[randomIndex];
-</script>
-<p>Umleitung läuft...</p>
+<html lang="de">
+<head>
+  <title>Umfrage - Data Driven Cross-Selling</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="font-family: Arial; text-align: center; padding: 50px; background: #f0f8ff;">
+  <h1>🎯 Willkommen zur Umfrage!</h1>
+  <p><strong>Bachelorarbeit:</strong> Data Driven Cross-Selling im E-Commerce</p>
+  <p>Du wirst automatisch zu <strong>einer zufälligen Version</strong> (50/50) weitergeleitet.</p>
+  <div style="font-size: 24px; margin: 20px;">
+    Weiterleitung in <span id="time">5</span> Sekunden...
+  </div>
+  
+  <script>
+    // DEINE QUESTBACK-LINKS HIER EINFÜGEN!
+    const links = [
+      'https://response.questback.com/campus02/di3m5wso2k',  // Version A
+      'https://response.questback.com/campus02/vyojauo5yx'   // Version B
+    ];
+    
+    const namespace = 'stefangraggaber.questback.abtest';  // Unique Stats-ID
+    const randomIndex = Math.floor(Math.random() * 2);
+    
+    // CounterAPI Ping für Live-Stats
+    fetch(`https://api.countapi.xyz/hit/${namespace}/version${randomIndex + 1}`);
+    
+    // Countdown + Redirect
+    let time = 5;
+    const timer = setInterval(() => {
+      document.getElementById('time').textContent = time;
+      time--;
+      if (time < 0) {
+        clearInterval(timer);
+        window.location.href = links[randomIndex];
+      }
+    }, 1000);
+  </script>
 </body>
 </html>
